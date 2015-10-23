@@ -56,6 +56,10 @@ public class UnlimitedScrollView: UIScrollView {
         return self.frame.size
     }
 
+    private var centerContentOffsetX: CGFloat {
+        return CGFloat(self.numberOfVisiblePages / 2) * self.pageSize.width
+    }
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.setUp()
@@ -113,10 +117,16 @@ public class UnlimitedScrollView: UIScrollView {
         self.contentSize = CGSizeMake(CGFloat(self.numberOfVisiblePages) * pageSize.width, pageSize.height)
     }
 
+    private func setCenterContentOffset() {
+        self.contentOffset = CGPoint(x: self.centerContentOffsetX, y: self.contentOffset.y)
+    }
+
     private func updateLayout() {
+        self.setCenterContentOffset()
         for i in (firstPageIndex..<self.numberOfVisiblePages) {
+            let realIndex = i - firstPageIndex
             if let page = self.pageAtIndex(i) {
-                self.placePage(page, index: i)
+                self.placePage(page, index: realIndex)
             }
         }
     }
