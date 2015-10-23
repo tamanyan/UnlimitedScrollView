@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C56FD78C1BDA255C0056499F /* UnlimitedScrollViewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56FD78B1BDA255C0056499F /* UnlimitedScrollViewPage.swift */; settings = {ASSET_TAGS = (); }; };
 		C5C5DFE41BDA155B00F3639D /* UnlimitedScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = C5C5DFE31BDA155B00F3639D /* UnlimitedScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5C5DFEB1BDA155B00F3639D /* UnlimitedScrollView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C5DFE01BDA155B00F3639D /* UnlimitedScrollView.framework */; settings = {ASSET_TAGS = (); }; };
 		C5C5DFF01BDA155B00F3639D /* UnlimitedScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C5DFEF1BDA155B00F3639D /* UnlimitedScrollViewTests.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C56FD78B1BDA255C0056499F /* UnlimitedScrollViewPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlimitedScrollViewPage.swift; sourceTree = "<group>"; };
 		C5C5DFE01BDA155B00F3639D /* UnlimitedScrollView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UnlimitedScrollView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5C5DFE31BDA155B00F3639D /* UnlimitedScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnlimitedScrollView.h; sourceTree = "<group>"; };
 		C5C5DFE51BDA155B00F3639D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 		C5C5DFE21BDA155B00F3639D /* UnlimitedScrollView */ = {
 			isa = PBXGroup;
 			children = (
+				C56FD78B1BDA255C0056499F /* UnlimitedScrollViewPage.swift */,
 				C5E8AD8F1BDA194D00E75EF5 /* UnlimitedScrollView.swift */,
 				C5C5DFE31BDA155B00F3639D /* UnlimitedScrollView.h */,
 				C5C5DFE51BDA155B00F3639D /* Info.plist */,
@@ -197,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C56FD78C1BDA255C0056499F /* UnlimitedScrollViewPage.swift in Sources */,
 				C5E8AD901BDA194D00E75EF5 /* UnlimitedScrollView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
