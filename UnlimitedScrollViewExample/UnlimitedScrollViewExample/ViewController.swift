@@ -95,7 +95,7 @@ extension ViewController: UnlimitedScrollViewDataSource {
     }
 
     func numberOfVisiblePagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int {
-        return 5
+        return 3
     }
 
     func unlimitedScrollView(unlimitedScrollView: UnlimitedScrollView, pageForItemAtIndex index: Int) -> UnlimitedScrollViewPage {

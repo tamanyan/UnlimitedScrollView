@@ -164,10 +164,12 @@ public class UnlimitedScrollView: UIScrollView {
             let minimumVisibleX = CGRectGetMinX(visibleBounds)
             let maximumVisibleX = CGRectGetMaxX(visibleBounds)
             if self.nextPageThresholdX <= maximumVisibleX {
+                self.emitLeavePageEvent()
                 self.moveNextPage()
                 self.emitArrivePageEvent()
             }
             if self.prevPageThresholdX >= minimumVisibleX {
+                self.emitLeavePageEvent()
                 self.movePrevPage()
                 self.emitArrivePageEvent()
             }
@@ -211,6 +213,7 @@ public class UnlimitedScrollView: UIScrollView {
             return 0
         }
 
+        self.emitLeavePageEvent()
         if let targetVisibleIndex = self.visiblePages.indexOf({ $0.index == pageIndex }),
             currentVisibleIndex = self.visiblePages.indexOf({ $0.index == currentPageIndex }) {
             let moveSize = targetVisibleIndex - currentVisibleIndex
@@ -271,8 +274,21 @@ public class UnlimitedScrollView: UIScrollView {
         }
     }
 
+    private func emitAddPageEvent(page: UnlimitedScrollViewPage) {
+        if let addPageMethod = self.unlimitedScrollViewDelegate?.unlimitedScrollViewAddPage {
+            addPageMethod(self, page: page)
+        }
+    }
+
+    private func emitRemovePageEvent(page: UnlimitedScrollViewPage) {
+        if let removePageMethod = self.unlimitedScrollViewDelegate?.unlimitedScrollViewRemovePage {
+            removePageMethod(self, page: page)
+        }
+    }
+
     private func updateData() {
         for i in self.visiblePages {
+            self.emitRemovePageEvent(i)
             self.reusablePages.append(i)
             i.removeFromSuperview()
         }
@@ -310,6 +326,7 @@ public class UnlimitedScrollView: UIScrollView {
                 self.addSubview(page)
                 page.index = index
                 self.visiblePages.append(page)
+                self.emitAddPageEvent(page)
             }
         }
     }
@@ -330,6 +347,7 @@ public class UnlimitedScrollView: UIScrollView {
             page.index = pageIndex.cursor
             self.visiblePages.insert(page, atIndex: 0)
             self.addSubview(page)
+            self.emitAddPageEvent(page)
         }
     }
 
@@ -342,6 +360,7 @@ public class UnlimitedScrollView: UIScrollView {
             page.index = pageIndex.cursor
             self.visiblePages.append(page)
             self.addSubview(page)
+            self.emitAddPageEvent(page)
         }
     }
 
@@ -350,6 +369,7 @@ public class UnlimitedScrollView: UIScrollView {
             firstPage.removeFromSuperview()
             self.reusablePages.append(firstPage)
             self.visiblePages.removeFirst()
+            self.emitRemovePageEvent(firstPage)
         }
     }
 
@@ -358,6 +378,7 @@ public class UnlimitedScrollView: UIScrollView {
             lastPage.removeFromSuperview()
             self.reusablePages.append(lastPage)
             self.visiblePages.removeLast()
+            self.emitRemovePageEvent(lastPage)
         }
     }
 
