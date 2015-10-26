@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		C505E02A1BDDE08A007DDF75 /* UnlimitedScrollView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C505E0291BDDE08A007DDF75 /* UnlimitedScrollView.framework */; };
 		C505E02B1BDDE08A007DDF75 /* UnlimitedScrollView.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C505E0291BDDE08A007DDF75 /* UnlimitedScrollView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C505E02D1BDE02D0007DDF75 /* ImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C505E02C1BDE02D0007DDF75 /* ImageScrollView.swift */; settings = {ASSET_TAGS = (); }; };
+		C505E02D1BDE02D0007DDF75 /* TextScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C505E02C1BDE02D0007DDF75 /* TextScrollView.swift */; settings = {ASSET_TAGS = (); }; };
 		C5D10EF61BDA1CDD00DA088B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D10EF51BDA1CDD00DA088B /* AppDelegate.swift */; };
 		C5D10EF81BDA1CDD00DA088B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D10EF71BDA1CDD00DA088B /* ViewController.swift */; };
 		C5D10EFB1BDA1CDD00DA088B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5D10EF91BDA1CDD00DA088B /* Main.storyboard */; };
@@ -43,7 +43,7 @@
 
 /* Begin PBXFileReference section */
 		C505E0291BDDE08A007DDF75 /* UnlimitedScrollView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = UnlimitedScrollView.framework; path = "/Users/svpcadmin/Library/Developer/Xcode/DerivedData/UnlimitedScrollViewExample-gopioyxajqmnaqgljzgpiwyunxib/Build/Products/Debug-iphoneos/UnlimitedScrollView.framework"; sourceTree = "<absolute>"; };
-		C505E02C1BDE02D0007DDF75 /* ImageScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageScrollView.swift; sourceTree = "<group>"; };
+		C505E02C1BDE02D0007DDF75 /* TextScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextScrollView.swift; sourceTree = "<group>"; };
 		C56FD7841BDA1D4B0056499F /* UnlimitedScrollView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UnlimitedScrollView.framework; path = "../UnlimitedScrollView/build/Debug-iphoneos/UnlimitedScrollView.framework"; sourceTree = "<group>"; };
 		C5D10EF21BDA1CDD00DA088B /* UnlimitedScrollViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnlimitedScrollViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5D10EF51BDA1CDD00DA088B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 		C5D10EF41BDA1CDD00DA088B /* UnlimitedScrollViewExample */ = {
 			isa = PBXGroup;
 			children = (
-				C505E02C1BDE02D0007DDF75 /* ImageScrollView.swift */,
+				C505E02C1BDE02D0007DDF75 /* TextScrollView.swift */,
 				C5D10EF51BDA1CDD00DA088B /* AppDelegate.swift */,
 				C5D10EF71BDA1CDD00DA088B /* ViewController.swift */,
 				C5D10EF91BDA1CDD00DA088B /* Main.storyboard */,
@@ -220,7 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C505E02D1BDE02D0007DDF75 /* ImageScrollView.swift in Sources */,
+				C505E02D1BDE02D0007DDF75 /* TextScrollView.swift in Sources */,
 				C5D10EF81BDA1CDD00DA088B /* ViewController.swift in Sources */,
 				C5D10EF61BDA1CDD00DA088B /* AppDelegate.swift in Sources */,
 			);
