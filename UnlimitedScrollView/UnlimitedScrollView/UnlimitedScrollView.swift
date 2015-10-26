@@ -48,7 +48,11 @@ public protocol UnlimitedScrollViewDataSource {
     func unlimitedScrollView(unlimitedScrollView: UnlimitedScrollView, pageForItemAtIndex index: Int) -> UnlimitedScrollViewPage
 }
 
-public protocol UnlimitedScrollViewDelegate {
+@objc public protocol UnlimitedScrollViewDelegate {
+    optional func unlimitedScrollViewArrivePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
+    optional func unlimitedScrollViewLeavePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
+    optional func unlimitedScrollViewRemovePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
+    optional func unlimitedScrollViewAddPage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
 }
 
 public class UnlimitedScrollView: UIScrollView {
@@ -118,6 +122,15 @@ public class UnlimitedScrollView: UIScrollView {
         return (self.contentSize.width / 2) - self.pageSize.width * 1.5
     }
 
+    private var currentVisiblePageIndex: Int {
+        return self.numberOfVisiblePages / 2
+    }
+
+    private var currentVisiblePage: UnlimitedScrollViewPage? {
+        return self.visiblePages.count > currentVisiblePageIndex
+            ? self.visiblePages[currentVisiblePageIndex] : nil
+    }
+
     private var lastVisiblePage: UnlimitedScrollViewPage? {
         return self.visiblePages.last
     }
@@ -152,9 +165,11 @@ public class UnlimitedScrollView: UIScrollView {
             let maximumVisibleX = CGRectGetMaxX(visibleBounds)
             if self.nextPageThresholdX <= maximumVisibleX {
                 self.moveNextPage()
+                self.emitArrivePageEvent()
             }
             if self.prevPageThresholdX >= minimumVisibleX {
                 self.movePrevPage()
+                self.emitArrivePageEvent()
             }
             self.layoutIfNeeded()
         }
@@ -166,6 +181,7 @@ public class UnlimitedScrollView: UIScrollView {
     public func reloadData() {
         assert(self.firstVisiblePageIndex < self.numberOfPages, "firstVisiblePageIndex is less than numberOfPages")
         self.updateData()
+        self.emitArrivePageEvent()
     }
 
     /**
@@ -207,11 +223,13 @@ public class UnlimitedScrollView: UIScrollView {
                     self.movePrevPage()
                 }
             }
+            self.emitArrivePageEvent()
             return moveSize
         } else {
             let moveSize = pageIndex - currentPageIndex
             self.firstVisiblePageIndex = pageIndex
             self.updateData()
+            self.emitArrivePageEvent()
             return moveSize
         }
     }
@@ -239,6 +257,18 @@ public class UnlimitedScrollView: UIScrollView {
         self.relocateVisiblePage()
         self.setCenterContentOffset()
         self.currentUnlimitedPageIndex.prev()
+    }
+
+    private func emitArrivePageEvent() {
+        if let page = self.currentVisiblePage, arrivePageMethod = self.unlimitedScrollViewDelegate?.unlimitedScrollViewArrivePage {
+            arrivePageMethod(self, page: page)
+        }
+    }
+
+    private func emitLeavePageEvent() {
+        if let page = self.currentVisiblePage, leavePageMethod = self.unlimitedScrollViewDelegate?.unlimitedScrollViewLeavePage {
+            leavePageMethod(self, page: page)
+        }
     }
 
     private func updateData() {

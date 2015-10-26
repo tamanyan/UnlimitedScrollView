@@ -108,4 +108,19 @@ extension ViewController: UnlimitedScrollViewDataSource {
 }
 
 extension ViewController: UnlimitedScrollViewDelegate {
+    func unlimitedScrollViewArrivePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+        print("arrive page \(page.index)")
+    }
+
+    func unlimitedScrollViewLeavePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+        print("leave page \(page.index)")
+    }
+
+    func unlimitedScrollViewRemovePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+        print("remove page \(page.index)")
+    }
+
+    func unlimitedScrollViewAddPage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+        print("add page \(page.index)")
+    }
 }
