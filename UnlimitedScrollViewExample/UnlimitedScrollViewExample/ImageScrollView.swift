@@ -15,7 +15,7 @@ class TextScrollView: UIScrollView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.parantView = UIView(frame: frame)
-        self.textLabel = UILabel(frame: CGRectInset(frame, 20, 40))
+        self.textLabel = UILabel(frame: CGRectInset(frame, 20, 100))
         self.textLabel?.textColor = UIColor.blackColor()
         self.textLabel?.font = UIFont.boldSystemFontOfSize(30)
         self.textLabel?.textAlignment = .Center

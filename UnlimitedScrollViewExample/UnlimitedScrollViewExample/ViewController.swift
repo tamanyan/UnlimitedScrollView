@@ -10,20 +10,34 @@ import UIKit
 import UnlimitedScrollView
 
 class ViewController: UIViewController {
-    var scrollView: UnlimitedScrollView?
-    var pages = (0...9)
+    var scrollView: UnlimitedScrollView!
+    var button: UIButton!
+    var pages = [Int]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.automaticallyAdjustsScrollViewInsets = false
         // Do any additional setup after loading the view, typically from a nib.
-        let scrollView = UnlimitedScrollView(frame: UIScreen.mainScreen().applicationFrame)
-        self.view.addSubview(scrollView)
-        scrollView.unlimitedScrollViewDataSource = self
-        scrollView.unlimitedScrollViewDelegate = self
-        scrollView.firstVisiblePageIndex = 9
-        scrollView.reloadData()
-        self.scrollView = scrollView
+        (0...9).forEach { [unowned self] (value) in
+            self.pages.append(value)
+        }
+        self.scrollView = UnlimitedScrollView(frame: UIScreen.mainScreen().applicationFrame)
+        self.view.addSubview(self.scrollView)
+        self.scrollView.unlimitedScrollViewDataSource = self
+        self.scrollView.unlimitedScrollViewDelegate = self
+        self.scrollView.firstVisiblePageIndex = 5
+        self.scrollView.reloadData()
+        self.button = UIButton(type: .System)
+        self.button.frame = CGRectMake(10, 60, 100, 30)
+        self.button.setTitle("ページ追加", forState: UIControlState.Normal)
+        self.button.layer.masksToBounds = true
+        self.view.addSubview(self.button)
+        self.button.addTarget(self, action: "addPage:", forControlEvents: .TouchUpInside)
+    }
+
+    func addPage(button: UIButton) {
+        self.pages.append(self.pages.maxElement()! + 1)
+        self.scrollView.firstVisiblePageIndex = self.scrollView.currentPageIndex
+        self.scrollView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
