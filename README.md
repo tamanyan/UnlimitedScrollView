@@ -1,6 +1,9 @@
 # UnlimitedScrollView
 UnlimitedScrollView provides an endlessly UIScrollView
 
+![Demo](https://github.com/tamanyan/UnlimitedScrollView/raw/master/images/demo.gif)
+
+
 # Usage
 
 initialize a UnlimitedScrollView new instance.
@@ -16,10 +19,10 @@ scrollView.reloadData()
 
 Finally, implement the UnlimitedScrollViewDataSource and UnlimitedScrollViewDelegate protocols methods.
 
-```
+```swift
 extension ViewController: UnlimitedScrollViewDataSource {
     func numberOfPagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int {
-        return pages.count
+        return 10
     }
 
     func numberOfVisiblePagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int {
@@ -39,7 +42,7 @@ extension ViewController: UnlimitedScrollViewDataSource {
 }
 ```
 
-```
+```swift
 extension ViewController: UnlimitedScrollViewDelegate {
     func unlimitedScrollViewArrivePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
         print("arrive page \(page.index)")

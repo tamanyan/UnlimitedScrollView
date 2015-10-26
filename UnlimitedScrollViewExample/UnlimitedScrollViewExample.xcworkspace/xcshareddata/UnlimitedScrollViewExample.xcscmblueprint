@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "FD1BD3FED5358D2178123895ED8B5BED28F28A29",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "48330DEB1866480BEE10AA71C6A4F4A8738D9C9C" : 0,
+    "FD1BD3FED5358D2178123895ED8B5BED28F28A29" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1633EA6B-9A4F-4AEA-A691-AEE7108CE158",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "48330DEB1866480BEE10AA71C6A4F4A8738D9C9C" : "..",
+    "FD1BD3FED5358D2178123895ED8B5BED28F28A29" : "UnlimitedScrollView\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "UnlimitedScrollViewExample",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "UnlimitedScrollViewExample\/UnlimitedScrollViewExample.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Nikkei\/seamless-paper-viewer.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "48330DEB1866480BEE10AA71C6A4F4A8738D9C9C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:tamanyan\/UnlimitedScrollView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FD1BD3FED5358D2178123895ED8B5BED28F28A29"
+    }
+  ]
+}
