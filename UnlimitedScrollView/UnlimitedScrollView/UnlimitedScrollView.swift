@@ -44,7 +44,7 @@ private final class UnlimitedPageIndex {
 
 public protocol UnlimitedScrollViewDataSource {
     /**
-    Return number of pages
+    Return number of pages.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
 
@@ -52,7 +52,7 @@ public protocol UnlimitedScrollViewDataSource {
     */
     func numberOfPagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int
     /**
-    Return number of visible pages
+    Return number of visible pages. This return value only accepts odd.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
 
@@ -60,7 +60,7 @@ public protocol UnlimitedScrollViewDataSource {
     */
     func numberOfVisiblePagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int
     /**
-    Called when need to create page
+    Called when need to create page.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
     - parameter index:               page index
@@ -72,28 +72,28 @@ public protocol UnlimitedScrollViewDataSource {
 
 @objc public protocol UnlimitedScrollViewDelegate {
     /**
-    Called when arrived to page
+    Called when arrived to page.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
     - parameter page:                arrived page
     */
     optional func unlimitedScrollViewArrivePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
     /**
-    Called when leaved to page
+    Called when leaved to page.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
     - parameter page:                leaved page
     */
     optional func unlimitedScrollViewLeavePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
     /**
-    Called when removed to page
+    Called when removed to page.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
     - parameter page:                removed page
     */
     optional func unlimitedScrollViewRemovePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
     /**
-    Called when added to page
+    Called when added to page.
 
     - parameter unlimitedScrollView: unlimitedScrollView view object
     - parameter page:                added page
@@ -224,10 +224,11 @@ public class UnlimitedScrollView: UIScrollView {
     }
 
     /**
-    Reload all pages data source
+    Reload all pages data source.
     */
     public func reloadData() {
         assert(self.firstVisiblePageIndex < self.numberOfPages, "firstVisiblePageIndex is less than numberOfPages")
+        assert(self.numberOfVisiblePages % 2 == 1, "numberOfVisiblePages only accepts odd.")
         self.updateData()
         self.emitArrivePageEvent()
     }
@@ -247,7 +248,7 @@ public class UnlimitedScrollView: UIScrollView {
     }
 
     /**
-    Move page
+    Move page.
 
     - parameter pageIndex: page index
 
