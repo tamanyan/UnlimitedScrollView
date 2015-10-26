@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  UnlimitedScrollViewExample
 //
-//  Created by svpcadmin on 2015/10/23.
+//  Created by tamanyan on 2015/10/23.
 //  Copyright © 2015年 tamanyan. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  UnlimitedScrollViewExample
 //
-//  Created by svpcadmin on 2015/10/23.
+//  Created by tamanyan on 2015/10/23.
 //  Copyright © 2015年 tamanyan. All rights reserved.
 //
 
@@ -11,15 +11,17 @@ import UnlimitedScrollView
 
 class ViewController: UIViewController {
     var scrollView: UnlimitedScrollView?
-    var pages = (0...10)
+    var pages = (0...9)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.automaticallyAdjustsScrollViewInsets = false
         // Do any additional setup after loading the view, typically from a nib.
         let scrollView = UnlimitedScrollView(frame: UIScreen.mainScreen().applicationFrame)
         self.view.addSubview(scrollView)
         scrollView.unlimitedScrollViewDataSource = self
         scrollView.unlimitedScrollViewDelegate = self
+        scrollView.firstVisiblePageIndex = 9
         scrollView.reloadData()
         self.scrollView = scrollView
     }
@@ -27,6 +29,12 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        self.view.setNeedsDisplay()
+        self.view.setNeedsLayout()
     }
 }
 
@@ -36,14 +44,14 @@ extension ViewController: UnlimitedScrollViewDataSource {
     }
 
     func numberOfVisiblePagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int {
-        return 3
+        return 5
     }
 
     func unlimitedScrollView(unlimitedScrollView: UnlimitedScrollView, pageForItemAtIndex index: Int) -> UnlimitedScrollViewPage {
         let page = unlimitedScrollView.dequeueReusablePage()
-        page!.textLabel?.text = "\(index)"
-        page?.layer.borderColor = UIColor.blackColor().CGColor
-        page?.layer.borderWidth = 2.0
+        let textView = TextScrollView(frame: CGRect(origin: CGPoint.zero, size: unlimitedScrollView.pageSize))
+        textView.textLabel?.text = "\(index)"
+        page?.customView = textView
         return page!
     }
 }

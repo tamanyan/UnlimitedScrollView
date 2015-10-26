@@ -2,9 +2,45 @@
 //  UnlimitedScrollView.swift
 //  UnlimitedScrollView
 //
-//  Created by svpcadmin on 2015/10/23.
+//  Created by tamanyan on 2015/10/23.
 //  Copyright © 2015年 tamanyan. All rights reserved.
 //
+
+private final class UnlimitedPageIndex {
+    var numberOfPages: Int = 0
+    var cursor: Int = 0
+
+    private var firstPageIndex: Int {
+        return 0
+    }
+
+    private var lastPageIndex: Int {
+        return max(self.firstPageIndex, self.numberOfPages - 1)
+    }
+
+    init(cursor: Int, numberOfPages: Int) {
+        self.cursor = cursor
+        self.numberOfPages = numberOfPages
+    }
+
+    func next() -> UnlimitedPageIndex {
+        self.cursor = self.nextIndex(self.cursor)
+        return self
+    }
+
+    func prev() -> UnlimitedPageIndex {
+        self.cursor = self.prevIndex(self.cursor)
+        return self
+    }
+
+    private func nextIndex(index: Int) -> Int {
+        return index == self.lastPageIndex ? self.firstPageIndex : index + 1
+    }
+
+    private func prevIndex(index: Int) -> Int {
+        return index == self.firstPageIndex ? self.lastPageIndex : index - 1
+    }
+}
 
 public protocol UnlimitedScrollViewDataSource {
     func numberOfPagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int
@@ -24,10 +60,20 @@ public class UnlimitedScrollView: UIScrollView {
     This protocol represents the data model object.
     */
     public var unlimitedScrollViewDataSource: UnlimitedScrollViewDataSource?
-    public var currentPageIndex: Int = 0
-    public var firstPageIndex: Int = 0
+    /**
+    current page index
+    */
+    public var currentPageIndex: Int {
+        return currentUnlimitedPageIndex.cursor
+    }
+    /**
+    first visible page index
+    */
+    public var firstVisiblePageIndex: Int = 0
+    private var currentUnlimitedPageIndex = UnlimitedPageIndex(cursor: 0, numberOfPages: 1)
     private var reusablePages = [UnlimitedScrollViewPage]()
     private var visiblePages = [UnlimitedScrollViewPage]()
+    private var scrollViewPanGestureRecognizer: UIPanGestureRecognizer?
 
     /**
     number of page
@@ -60,6 +106,30 @@ public class UnlimitedScrollView: UIScrollView {
         return CGFloat(self.numberOfVisiblePages / 2) * self.pageSize.width
     }
 
+    private var nextPageThresholdX: CGFloat {
+        return (self.contentSize.width / 2) + self.pageSize.width * 1.5
+    }
+
+    private var prevPageThresholdX: CGFloat {
+        return (self.contentSize.width / 2) - self.pageSize.width * 1.5
+    }
+
+    private var lastVisiblePage: UnlimitedScrollViewPage? {
+        return self.visiblePages.last
+    }
+
+    private var firstVisiblePage: UnlimitedScrollViewPage? {
+        return self.visiblePages.first
+    }
+
+    private var firstPageIndex: Int {
+        return currentUnlimitedPageIndex.firstPageIndex
+    }
+
+    private var lastPageIndex: Int {
+        return currentUnlimitedPageIndex.lastPageIndex
+    }
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.setUp()
@@ -72,12 +142,31 @@ public class UnlimitedScrollView: UIScrollView {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
+        let visibleBounds = self.bounds
+        let minimumVisibleX = CGRectGetMinX(visibleBounds)
+        let maximumVisibleX = CGRectGetMaxX(visibleBounds)
+        if self.nextPageThresholdX <= maximumVisibleX {
+            self.removeFirstVisiblePage()
+            self.addLastVisiblePage()
+            self.relocateVisiblePage()
+            self.setCenterContentOffset()
+            self.currentUnlimitedPageIndex.next()
+        }
+        if self.prevPageThresholdX >= minimumVisibleX {
+            self.removeLastVisiblePage()
+            self.addFirstVisiblePage()
+            self.relocateVisiblePage()
+            self.setCenterContentOffset()
+            self.currentUnlimitedPageIndex.prev()
+        }
+        self.layoutIfNeeded()
     }
 
     /**
     Reload all pages data source
     */
     public func reloadData() {
+        assert(self.firstVisiblePageIndex < self.numberOfPages, "firstVisiblePageIndex is less than numberOfPages")
         self.updateData()
     }
 
@@ -97,6 +186,7 @@ public class UnlimitedScrollView: UIScrollView {
 
     private func setUp() {
         self.backgroundColor = UIColor.clearColor()
+        self.bounces = false
         self.pagingEnabled = true
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
@@ -108,6 +198,7 @@ public class UnlimitedScrollView: UIScrollView {
             self.reusablePages.append(i)
             i.removeFromSuperview()
         }
+        self.currentUnlimitedPageIndex = self.createInitialPageIndex()
         self.visiblePages.removeAll()
         self.updateContentSize()
         self.updateLayout()
@@ -119,27 +210,101 @@ public class UnlimitedScrollView: UIScrollView {
 
     private func setCenterContentOffset() {
         self.contentOffset = CGPoint(x: self.centerContentOffsetX, y: self.contentOffset.y)
+        self.setContentOffset(CGPoint(x: self.centerContentOffsetX, y: self.contentOffset.y), animated: false)
     }
 
     private func updateLayout() {
         self.setCenterContentOffset()
-        for i in (firstPageIndex..<self.numberOfVisiblePages) {
-            let realIndex = i - firstPageIndex
-            if let page = self.pageAtIndex(i) {
-                self.placePage(page, index: realIndex)
+        var indexList = [Int]()
+        let pageIndex = self.createCurrentPageIndex()
+        for _ in 0..<(self.numberOfVisiblePages / 2 + 1) {
+            pageIndex.prev()
+        }
+        for _ in 0..<self.numberOfVisiblePages {
+            indexList.append(pageIndex.next().cursor)
+        }
+        var i = 0
+        for index in indexList {
+            if let page = self.pageAtIndex(index) {
+                page.frame = CGRect(
+                    origin: CGPoint(x: CGFloat(i++) * self.pageSize.width, y: 0),
+                    size: self.pageSize)
+                self.addSubview(page)
+                page.index = index
+                self.visiblePages.append(page)
             }
         }
     }
 
     private func placePage(page: UnlimitedScrollViewPage, index: Int) {
-        page.frame = CGRect(origin: CGPoint(x: CGFloat(index) * self.pageSize.width, y: 0), size: self.pageSize)
-        self.addSubview(page)
+    }
+
+    private func relocateVisiblePage() {
+        for i in 0..<self.visiblePages.count {
+            let page = self.visiblePages[i]
+            page.frame.origin = CGPoint(x: CGFloat(i) * self.pageSize.width, y: 0)
+        }
+    }
+
+    private func addFirstVisiblePage() {
+        guard let firstPage = self.firstVisiblePage else {
+            return
+        }
+        let pageIndex = createPageIndex(firstPage.index).prev()
+        if let page = self.pageAtIndex(pageIndex.cursor) {
+            page.index = pageIndex.cursor
+            self.visiblePages.insert(page, atIndex: 0)
+            self.addSubview(page)
+        }
+    }
+
+    private func addLastVisiblePage() {
+        guard let lastPage = self.lastVisiblePage else {
+            return
+        }
+        let pageIndex = createPageIndex(lastPage.index).next()
+        if let page = self.pageAtIndex(pageIndex.cursor) {
+            page.index = pageIndex.cursor
+            self.visiblePages.append(page)
+            self.addSubview(page)
+        }
+    }
+
+    private func removeFirstVisiblePage() {
+        if let firstPage = self.firstVisiblePage {
+            firstPage.removeFromSuperview()
+            self.reusablePages.append(firstPage)
+            self.visiblePages.removeFirst()
+        }
+    }
+
+    private func removeLastVisiblePage() {
+        if let lastPage = self.lastVisiblePage {
+            lastPage.removeFromSuperview()
+            self.reusablePages.append(lastPage)
+            self.visiblePages.removeLast()
+        }
     }
 
     private func pageAtIndex(index: Int) -> UnlimitedScrollViewPage? {
-        return self.unlimitedScrollViewDataSource?.unlimitedScrollView(self, pageForItemAtIndex: index)
+        guard let page = self.unlimitedScrollViewDataSource?.unlimitedScrollView(self, pageForItemAtIndex: index) else {
+            return nil
+        }
+        if let view = page.customView {
+            page.addSubview(view)
+        }
+        return page
     }
-}
 
-extension UnlimitedScrollView: UIScrollViewDelegate {
+    private func createPageIndex(index: Int) -> UnlimitedPageIndex {
+        return UnlimitedPageIndex(cursor: index, numberOfPages: self.numberOfPages)
+    }
+
+    private func createCurrentPageIndex() -> UnlimitedPageIndex {
+        return UnlimitedPageIndex(cursor: self.currentPageIndex, numberOfPages: self.numberOfPages)
+    }
+
+    private func createInitialPageIndex() -> UnlimitedPageIndex {
+        return UnlimitedPageIndex(cursor: self.firstVisiblePageIndex, numberOfPages: self.numberOfPages)
+    }
 }
