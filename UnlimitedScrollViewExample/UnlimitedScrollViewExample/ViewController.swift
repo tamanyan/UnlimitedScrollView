@@ -113,6 +113,9 @@ extension ViewController: UnlimitedScrollViewDelegate {
     }
 
     func unlimitedScrollViewLeavePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+        if let view = page.customView as? TextScrollView {
+            view.zoomScale = 1
+        }
         print("leave page \(page.index)")
     }
 
