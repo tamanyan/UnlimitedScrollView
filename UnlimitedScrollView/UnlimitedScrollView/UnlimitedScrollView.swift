@@ -187,31 +187,33 @@ public class UnlimitedScrollView: UIScrollView {
 
     - parameter pageIndex: page index
 
-    - returns: if moving page succeed, return true
+    - returns: eturn moving size
     */
-    public func moveTo(pageIndex: Int) -> Bool {
+    public func moveTo(pageIndex: Int) -> Int {
         let currentPageIndex = self.currentPageIndex
         if currentPageIndex == pageIndex {
-            return false
+            return 0
         }
 
         if let targetVisibleIndex = self.visiblePages.indexOf({ $0.index == pageIndex }),
             currentVisibleIndex = self.visiblePages.indexOf({ $0.index == currentPageIndex }) {
-            let moveSize = currentVisibleIndex - targetVisibleIndex
+            let moveSize = targetVisibleIndex - currentVisibleIndex
             if moveSize > 0 {
                 for _ in 0..<moveSize {
-                    self.movePrevPage()
+                    self.moveNextPage()
                 }
             } else if moveSize < 0 {
                 for _ in 0..<abs(moveSize) {
-                    self.moveNextPage()
+                    self.movePrevPage()
                 }
             }
+            return moveSize
         } else {
+            let moveSize = pageIndex - currentPageIndex
             self.firstVisiblePageIndex = pageIndex
             self.updateData()
+            return moveSize
         }
-        return true
     }
 
     private func setUp() {

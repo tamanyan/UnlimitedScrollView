@@ -58,7 +58,8 @@ class ViewController: UIViewController {
     }
 
     func movePage(slider: UISlider) {
-        self.scrollView.moveTo(Int(slider.value))
+        let moveSize = self.scrollView.moveTo(Int(slider.value))
+        print("move size \(moveSize)")
     }
 
     override func didReceiveMemoryWarning() {
