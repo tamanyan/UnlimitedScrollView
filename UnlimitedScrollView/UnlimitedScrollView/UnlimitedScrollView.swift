@@ -70,6 +70,10 @@ public class UnlimitedScrollView: UIScrollView {
     first visible page index
     */
     public var firstVisiblePageIndex: Int = 0
+    /**
+    if this value is true, page relocation event will happen.
+    */
+    public var isPageRelocation = true
     private var currentUnlimitedPageIndex = UnlimitedPageIndex(cursor: 0, numberOfPages: 1)
     private var reusablePages = [UnlimitedScrollViewPage]()
     private var visiblePages = [UnlimitedScrollViewPage]()
@@ -142,24 +146,18 @@ public class UnlimitedScrollView: UIScrollView {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        let visibleBounds = self.bounds
-        let minimumVisibleX = CGRectGetMinX(visibleBounds)
-        let maximumVisibleX = CGRectGetMaxX(visibleBounds)
-        if self.nextPageThresholdX <= maximumVisibleX {
-            self.removeFirstVisiblePage()
-            self.addLastVisiblePage()
-            self.relocateVisiblePage()
-            self.setCenterContentOffset()
-            self.currentUnlimitedPageIndex.next()
+        if isPageRelocation {
+            let visibleBounds = self.bounds
+            let minimumVisibleX = CGRectGetMinX(visibleBounds)
+            let maximumVisibleX = CGRectGetMaxX(visibleBounds)
+            if self.nextPageThresholdX <= maximumVisibleX {
+                self.moveNextPage()
+            }
+            if self.prevPageThresholdX >= minimumVisibleX {
+                self.movePrevPage()
+            }
+            self.layoutIfNeeded()
         }
-        if self.prevPageThresholdX >= minimumVisibleX {
-            self.removeLastVisiblePage()
-            self.addFirstVisiblePage()
-            self.relocateVisiblePage()
-            self.setCenterContentOffset()
-            self.currentUnlimitedPageIndex.prev()
-        }
-        self.layoutIfNeeded()
     }
 
     /**
@@ -171,7 +169,7 @@ public class UnlimitedScrollView: UIScrollView {
     }
 
     /**
-    Gets a reusable page.
+    Get a reusable page.
 
     - returns: A reusable UnlimitedScrollViewPage
     */
@@ -184,6 +182,38 @@ public class UnlimitedScrollView: UIScrollView {
         return page
     }
 
+    /**
+    Move page
+
+    - parameter pageIndex: page index
+
+    - returns: if moving page succeed, return true
+    */
+    public func moveTo(pageIndex: Int) -> Bool {
+        let currentPageIndex = self.currentPageIndex
+        if currentPageIndex == pageIndex {
+            return false
+        }
+
+        if let targetVisibleIndex = self.visiblePages.indexOf({ $0.index == pageIndex }),
+            currentVisibleIndex = self.visiblePages.indexOf({ $0.index == currentPageIndex }) {
+            let moveSize = currentVisibleIndex - targetVisibleIndex
+            if moveSize > 0 {
+                for _ in 0..<moveSize {
+                    self.movePrevPage()
+                }
+            } else if moveSize < 0 {
+                for _ in 0..<abs(moveSize) {
+                    self.moveNextPage()
+                }
+            }
+        } else {
+            self.firstVisiblePageIndex = pageIndex
+            self.updateData()
+        }
+        return true
+    }
+
     private func setUp() {
         self.backgroundColor = UIColor.clearColor()
         self.bounces = false
@@ -191,6 +221,22 @@ public class UnlimitedScrollView: UIScrollView {
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
         self.userInteractionEnabled = true
+    }
+
+    private func moveNextPage() {
+        self.removeFirstVisiblePage()
+        self.addLastVisiblePage()
+        self.relocateVisiblePage()
+        self.setCenterContentOffset()
+        self.currentUnlimitedPageIndex.next()
+    }
+
+    private func movePrevPage() {
+        self.removeLastVisiblePage()
+        self.addFirstVisiblePage()
+        self.relocateVisiblePage()
+        self.setCenterContentOffset()
+        self.currentUnlimitedPageIndex.prev()
     }
 
     private func updateData() {
@@ -234,9 +280,6 @@ public class UnlimitedScrollView: UIScrollView {
                 self.visiblePages.append(page)
             }
         }
-    }
-
-    private func placePage(page: UnlimitedScrollViewPage, index: Int) {
     }
 
     private func relocateVisiblePage() {

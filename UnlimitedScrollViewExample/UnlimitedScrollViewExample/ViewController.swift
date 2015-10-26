@@ -12,6 +12,7 @@ import UnlimitedScrollView
 class ViewController: UIViewController {
     var scrollView: UnlimitedScrollView!
     var button: UIButton!
+    var pageSlider: UISlider!
     var pages = [Int]()
 
     override func viewDidLoad() {
@@ -26,18 +27,38 @@ class ViewController: UIViewController {
         self.scrollView.unlimitedScrollViewDelegate = self
         self.scrollView.firstVisiblePageIndex = 5
         self.scrollView.reloadData()
+
         self.button = UIButton(type: .System)
         self.button.frame = CGRectMake(10, 60, 100, 30)
         self.button.setTitle("ページ追加", forState: UIControlState.Normal)
         self.button.layer.masksToBounds = true
         self.view.addSubview(self.button)
         self.button.addTarget(self, action: "addPage:", forControlEvents: .TouchUpInside)
+
+        let insetFrame = CGRectInset(self.view.frame, 10, 10)
+        self.pageSlider = UISlider(frame:
+            CGRectMake(
+                CGRectGetMinX(insetFrame),
+                CGRectGetMaxY(insetFrame) - 50,
+                insetFrame.width, 30
+            )
+        )
+        self.pageSlider.minimumValue = 0
+        self.pageSlider.maximumValue = Float(pages.count - 1)
+        self.pageSlider.continuous = false
+        self.pageSlider.addTarget(self, action: "movePage:", forControlEvents: .TouchUpInside)
+        self.view.addSubview(self.pageSlider)
     }
 
     func addPage(button: UIButton) {
         self.pages.append(self.pages.maxElement()! + 1)
+        self.pageSlider.maximumValue = Float(pages.count - 1)
         self.scrollView.firstVisiblePageIndex = self.scrollView.currentPageIndex
         self.scrollView.reloadData()
+    }
+
+    func movePage(slider: UISlider) {
+        self.scrollView.moveTo(Int(slider.value))
     }
 
     override func didReceiveMemoryWarning() {
