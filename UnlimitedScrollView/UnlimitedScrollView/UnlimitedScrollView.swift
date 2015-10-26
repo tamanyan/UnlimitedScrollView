@@ -43,15 +43,61 @@ private final class UnlimitedPageIndex {
 }
 
 public protocol UnlimitedScrollViewDataSource {
+    /**
+    Return number of pages
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+
+    - returns: number of pages
+    */
     func numberOfPagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int
+    /**
+    Return number of visible pages
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+
+    - returns: number of visible pages
+    */
     func numberOfVisiblePagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int
+    /**
+    Called when need to create page
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+    - parameter index:               page index
+
+    - returns: UnlimitedScrollViewPage view object
+    */
     func unlimitedScrollView(unlimitedScrollView: UnlimitedScrollView, pageForItemAtIndex index: Int) -> UnlimitedScrollViewPage
 }
 
 @objc public protocol UnlimitedScrollViewDelegate {
+    /**
+    Called when arrived to page
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+    - parameter page:                arrived page
+    */
     optional func unlimitedScrollViewArrivePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
+    /**
+    Called when leaved to page
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+    - parameter page:                leaved page
+    */
     optional func unlimitedScrollViewLeavePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
+    /**
+    Called when removed to page
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+    - parameter page:                removed page
+    */
     optional func unlimitedScrollViewRemovePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
+    /**
+    Called when added to page
+
+    - parameter unlimitedScrollView: unlimitedScrollView view object
+    - parameter page:                added page
+    */
     optional func unlimitedScrollViewAddPage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage)
 }
 
