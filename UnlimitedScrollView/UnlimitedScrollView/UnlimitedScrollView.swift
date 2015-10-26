@@ -156,6 +156,21 @@ public class UnlimitedScrollView: UIScrollView {
         return self.frame.size
     }
 
+    /**
+    Get current visible page.
+    */
+    public var currentVisiblePage: UnlimitedScrollViewPage? {
+        return self.visiblePages.count > currentVisiblePageIndex
+            ? self.visiblePages[currentVisiblePageIndex] : nil
+    }
+
+    /**
+    Get all visible pages.
+    */
+    public var allVisiblePage: [UnlimitedScrollViewPage] {
+        return self.visiblePages
+    }
+
     private var centerContentOffsetX: CGFloat {
         return CGFloat(self.numberOfVisiblePages / 2) * self.pageSize.width
     }
@@ -170,11 +185,6 @@ public class UnlimitedScrollView: UIScrollView {
 
     private var currentVisiblePageIndex: Int {
         return self.numberOfVisiblePages / 2
-    }
-
-    private var currentVisiblePage: UnlimitedScrollViewPage? {
-        return self.visiblePages.count > currentVisiblePageIndex
-            ? self.visiblePages[currentVisiblePageIndex] : nil
     }
 
     private var lastVisiblePage: UnlimitedScrollViewPage? {
