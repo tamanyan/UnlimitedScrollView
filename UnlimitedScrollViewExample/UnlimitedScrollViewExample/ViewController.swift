@@ -58,8 +58,23 @@ class ViewController: UIViewController {
     }
 
     func movePage(slider: UISlider) {
-        let moveSize = self.scrollView.moveTo(Int(slider.value))
-        print("move size \(moveSize)")
+        let moveSize = Int(slider.value) - self.scrollView.currentPageIndex
+        if self.scrollView.moveTo(Int(slider.value)) != 0 {
+            self.scrollView.isPageRelocation = false
+            let originalOffsetX = self.scrollView.contentOffset.x
+            if moveSize < 0 {
+                self.scrollView.contentOffset.x += self.scrollView.pageSize.width / 2
+            } else {
+                self.scrollView.contentOffset.x -= self.scrollView.pageSize.width / 2
+            }
+            self.scrollView.userInteractionEnabled = false
+            UIView.animateWithDuration(0.2, animations: { [unowned self] in
+                self.scrollView.contentOffset.x = originalOffsetX
+            }, completion: { [unowned self] (finished) -> Void in
+                self.scrollView.isPageRelocation = true
+                self.scrollView.userInteractionEnabled = true
+            })
+        }
     }
 
     override func didReceiveMemoryWarning() {
