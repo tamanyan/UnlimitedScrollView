@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C56FD78C1BDA255C0056499F /* UnlimitedScrollViewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56FD78B1BDA255C0056499F /* UnlimitedScrollViewPage.swift */; settings = {ASSET_TAGS = (); }; };
+		C56FD78C1BDA255C0056499F /* UnlimitedScrollViewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56FD78B1BDA255C0056499F /* UnlimitedScrollViewPage.swift */; };
 		C5C5DFE41BDA155B00F3639D /* UnlimitedScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = C5C5DFE31BDA155B00F3639D /* UnlimitedScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C5C5DFEB1BDA155B00F3639D /* UnlimitedScrollView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C5DFE01BDA155B00F3639D /* UnlimitedScrollView.framework */; settings = {ASSET_TAGS = (); }; };
+		C5C5DFEB1BDA155B00F3639D /* UnlimitedScrollView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C5DFE01BDA155B00F3639D /* UnlimitedScrollView.framework */; };
 		C5C5DFF01BDA155B00F3639D /* UnlimitedScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C5DFEF1BDA155B00F3639D /* UnlimitedScrollViewTests.swift */; };
-		C5E8AD901BDA194D00E75EF5 /* UnlimitedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E8AD8F1BDA194D00E75EF5 /* UnlimitedScrollView.swift */; settings = {ASSET_TAGS = (); }; };
+		C5E8AD901BDA194D00E75EF5 /* UnlimitedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E8AD8F1BDA194D00E75EF5 /* UnlimitedScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,7 +261,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -303,7 +303,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
