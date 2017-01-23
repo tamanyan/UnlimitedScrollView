@@ -20,47 +20,47 @@ class ViewController: UIViewController {
         (0...9).forEach { [unowned self] (value) in
             self.pages.append(value)
         }
-        self.scrollView = UnlimitedScrollView(frame: UIScreen.mainScreen().applicationFrame)
+        self.scrollView = UnlimitedScrollView(frame: UIScreen.main.applicationFrame)
         self.view.addSubview(self.scrollView)
         self.scrollView.unlimitedScrollViewDataSource = self
         self.scrollView.unlimitedScrollViewDelegate = self
         self.scrollView.firstVisiblePageIndex = 5
 
-        self.button = UIButton(type: .System)
-        self.button.frame = CGRectMake(10, 60, 100, 30)
-        self.button.setTitle("Add Page", forState: UIControlState.Normal)
+        self.button = UIButton(type: .system)
+        self.button.frame = CGRect(x: 10, y: 60, width: 100, height: 30)
+        self.button.setTitle("Add Page", for: UIControlState())
         self.button.layer.masksToBounds = true
         self.view.addSubview(self.button)
-        self.button.addTarget(self, action: "addPage:", forControlEvents: .TouchUpInside)
+        self.button.addTarget(self, action: #selector(ViewController.addPage(_:)), for: .touchUpInside)
 
-        let insetFrame = CGRectInset(self.view.frame, 10, 10)
+        let insetFrame = self.view.frame.insetBy(dx: 10, dy: 10)
         self.pageSlider = UISlider(frame:
-            CGRectMake(
-                CGRectGetMinX(insetFrame),
-                CGRectGetMaxY(insetFrame) - 50,
-                insetFrame.width, 30
+            CGRect(
+                x: insetFrame.minX,
+                y: insetFrame.maxY - 50,
+                width: insetFrame.width, height: 30
             )
         )
         self.pageSlider?.minimumValue = 0
         self.pageSlider?.maximumValue = Float(pages.count - 1)
-        self.pageSlider?.continuous = false
-        self.pageSlider?.addTarget(self, action: "movePage:", forControlEvents: .TouchUpInside)
+        self.pageSlider?.isContinuous = false
+        self.pageSlider?.addTarget(self, action: #selector(ViewController.movePage(_:)), for: .touchUpInside)
         self.view.addSubview(self.pageSlider!)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.scrollView.reloadData()
     }
 
-    func addPage(button: UIButton) {
-        self.pages.append(self.pages.maxElement()! + 1)
+    func addPage(_ button: UIButton) {
+        self.pages.append(self.pages.max()! + 1)
         self.pageSlider?.maximumValue = Float(pages.count - 1)
         self.scrollView.firstVisiblePageIndex = self.scrollView.currentPageIndex
         self.scrollView.reloadData()
     }
 
-    func movePage(slider: UISlider) {
+    func movePage(_ slider: UISlider) {
         let moveSize = Int(slider.value) - self.scrollView.currentPageIndex
         if self.scrollView.moveTo(Int(slider.value)) != 0 {
             self.scrollView.isPageRelocation = false
@@ -70,12 +70,12 @@ class ViewController: UIViewController {
             } else {
                 self.scrollView.contentOffset.x -= self.scrollView.pageSize.width / 2
             }
-            self.scrollView.userInteractionEnabled = false
-            UIView.animateWithDuration(0.2, animations: { [unowned self] in
+            self.scrollView.isUserInteractionEnabled = false
+            UIView.animate(withDuration: 0.2, animations: { [unowned self] in
                 self.scrollView.contentOffset.x = originalOffsetX
             }, completion: { [unowned self] (finished) -> Void in
                 self.scrollView.isPageRelocation = true
-                self.scrollView.userInteractionEnabled = true
+                self.scrollView.isUserInteractionEnabled = true
             })
         }
     }
@@ -93,15 +93,15 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UnlimitedScrollViewDataSource {
-    func numberOfPagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int {
+    func numberOfPagesInUnlimitedScrollView(_ unlimitedScrollView: UnlimitedScrollView) -> Int {
         return pages.count
     }
 
-    func numberOfVisiblePagesInUnlimitedScrollView(unlimitedScrollView: UnlimitedScrollView) -> Int {
+    func numberOfVisiblePagesInUnlimitedScrollView(_ unlimitedScrollView: UnlimitedScrollView) -> Int {
         return 3
     }
 
-    func unlimitedScrollView(unlimitedScrollView: UnlimitedScrollView, pageForItemAtIndex index: Int) -> UnlimitedScrollViewPage {
+    func unlimitedScrollView(_ unlimitedScrollView: UnlimitedScrollView, pageForItemAtIndex index: Int) -> UnlimitedScrollViewPage {
         let page = unlimitedScrollView.dequeueReusablePage()
         let textView = TextScrollView(frame: CGRect(origin: CGPoint.zero, size: unlimitedScrollView.pageSize))
         textView.textLabel?.text = "\(index)"
@@ -111,23 +111,23 @@ extension ViewController: UnlimitedScrollViewDataSource {
 }
 
 extension ViewController: UnlimitedScrollViewDelegate {
-    func unlimitedScrollViewArrivePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+    func unlimitedScrollViewArrivePage(_ unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
         print("arrive page \(page.index)")
         self.pageSlider?.value = Float(page.index)
     }
 
-    func unlimitedScrollViewLeavePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+    func unlimitedScrollViewLeavePage(_ unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
         if let view = page.customView as? TextScrollView {
             view.zoomScale = 1
         }
         print("leave page \(page.index)")
     }
 
-    func unlimitedScrollViewRemovePage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+    func unlimitedScrollViewRemovePage(_ unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
         print("remove page \(page.index)")
     }
 
-    func unlimitedScrollViewAddPage(unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
+    func unlimitedScrollViewAddPage(_ unlimitedScrollView: UnlimitedScrollView, page: UnlimitedScrollViewPage) {
         print("add page \(page.index)")
     }
 }

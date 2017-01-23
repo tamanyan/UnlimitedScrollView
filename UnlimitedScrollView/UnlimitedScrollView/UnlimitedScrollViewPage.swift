@@ -6,9 +6,9 @@
 //  Copyright © 2015年 tamanyan. All rights reserved.
 //
 
-public class UnlimitedScrollViewPage: UIView {
-    public var customView: UIView?
-    public var index: Int = 0
+open class UnlimitedScrollViewPage: UIView {
+    open var customView: UIView?
+    open var index: Int = 0
 
     override public init(frame: CGRect) {
         super.init(frame: frame)

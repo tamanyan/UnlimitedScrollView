@@ -15,11 +15,11 @@ class TextScrollView: UIScrollView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.parantView = UIView(frame: frame)
-        self.textLabel = UILabel(frame: CGRectInset(frame, 20, 100))
-        self.textLabel?.textColor = UIColor.blackColor()
-        self.textLabel?.font = UIFont.boldSystemFontOfSize(30)
-        self.textLabel?.textAlignment = .Center
-        self.textLabel?.layer.borderColor = UIColor.blackColor().CGColor
+        self.textLabel = UILabel(frame: frame.insetBy(dx: 20, dy: 100))
+        self.textLabel?.textColor = UIColor.black
+        self.textLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+        self.textLabel?.textAlignment = .center
+        self.textLabel?.layer.borderColor = UIColor.black.cgColor
         self.textLabel?.layer.borderWidth = 2.0
         self.addSubview(self.parantView!)
         self.parantView?.addSubview(self.textLabel!)
@@ -36,7 +36,7 @@ class TextScrollView: UIScrollView, UIScrollViewDelegate {
         super.init(coder: aDecoder)
     }
 
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.parantView
     }
 }
